@@ -1,0 +1,47 @@
+@page "/projects/{Id:int}/edit"
+@inject IProjectService ProjectService
+@inject NavigationManager NavigationManager
+
+<PageTitle>New Project</PageTitle>
+
+<div class="card bg-light">
+    <div class="card-body">
+        <form>
+            <div class="form-group">
+                <label for="Title" class="control-label">Title</label>
+                <input form="Title" class="form-control" @bind="@project.Title" />
+            </div>
+
+            <div class="form-group">
+                <label for="Description" class="control-label">Description</label>
+                <textarea form="Title" class="form-control" @bind="@project.Description"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@UpdateProject" value="Save"/>
+                <input type="button" class="btn btn-default" @onclick="@Cancel" value="Cancel"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+@code {
+    protected async void UpdateProject()
+    {
+        await ProjectService.UpdateProject(project);
+        NavigationManager.NavigateTo("projects/" + Id);
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("projects/" + Id);
+    }
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private Project? project;
+
+    protected override async Task OnInitializedAsync()
+    {
+        project = await ProjectService.GetProject(Id);
+    }
+}

@@ -1,0 +1,35 @@
+@page "/projects/{Id:int}"
+@inject IProjectService ProjectService
+
+<PageTitle>Project</PageTitle>
+
+@if(project == null)
+{
+    <p><em>Loading...</em></p>
+} 
+else
+{
+    <div class="d-flex justify-content-between align-items-end">
+        <h1>@project.Title</h1>
+        <a class="btn btn-primary" href="projects/@Id/edit">Edit Project</a>
+    </div>
+    <p>@project.Description</p>
+    <div class="list-group">
+        @foreach (var issue in project.Issues)
+        {
+            <a class="list-group-item" href="/issues/@issue.Id">@issue.Title</a>
+        }
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Project project;
+
+    protected override async Task OnInitializedAsync()
+    {
+        project = await ProjectService.GetProject(Id);
+    }
+}

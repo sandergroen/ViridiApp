@@ -1,0 +1,29 @@
+@page "/issues/{Id:int}"
+@inject IIssueService IssueService
+
+<PageTitle>Issues</PageTitle>
+
+@if(issue == null)
+{
+    <p><em>Loading...</em></p>
+} 
+else
+{
+    <div class="d-flex justify-content-between align-items-end">
+        <h1>@issue.Title</h1>
+        <a class="btn btn-primary" href="issues/@Id/edit">Edit Issue</a>
+    </div>
+    <p>@issue.Description</p>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Issue issue;
+
+    protected override async Task OnInitializedAsync()
+    {
+        issue = await IssueService.GetIssue(Id);
+    }
+}

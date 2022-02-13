@@ -1,0 +1,48 @@
+﻿@page "/projects"
+
+<PageTitle>Projects</PageTitle>
+
+@inject IProjectService ProjectService
+
+<div class="d-flex justify-content-between align-items-end">
+    <h1>Projects</h1>
+    <NavLink class="btn btn-primary" href="projects/create">Add Project</NavLink>
+</div>
+
+@if (projects == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var project in projects)
+            {
+                <tr>
+                    <td>
+                        <a class="nav-link" href="projects/@project.Id">
+                            @project.Title
+                        </a>
+                    </td>
+                    <td>@project.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<Project>? projects;
+
+    protected override async Task OnInitializedAsync()
+    {
+        projects = await ProjectService.GetProjectList();
+    }
+}
