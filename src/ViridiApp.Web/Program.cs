@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
 using ViridiApp.Data;
-using ViridiApp.Web.Data;
 using ViridiApp.Domain.Repositories;
 using ViridiApp.Data.Repositories;
 using ViridiApp.Application.Interfaces;
@@ -20,8 +19,6 @@ builder.Services.AddDbContext<ViridiContext>(options =>
         assembly => assembly.MigrationsAssembly("ViridiApp.Data")
     )
 );
-
-builder.Services.AddSingleton<WeatherForecastService>();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
