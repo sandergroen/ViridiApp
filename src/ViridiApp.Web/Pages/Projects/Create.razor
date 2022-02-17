@@ -6,27 +6,14 @@
 
 <div class="card bg-light">
     <div class="card-body">
-        <form>
-            <div class="form-group">
-                <label for="Title" class="control-label">Title</label>
-                <input form="Title" class="form-control" @bind="@project.Title" />
-            </div>
-
-            <div class="form-group">
-                <label for="Description" class="control-label">Description</label>
-                <textarea form="Title" class="form-control" @bind="@project.Description"></textarea>
-            </div>
-            <div class="form-group">
-                <input type="button" class="btn btn-primary" @onclick="@CreateProject" value="Save"/>
-                <input type="button" class="btn btn-default" @onclick="@Cancel" value="Cancel"/>
-            </div>
-        </form>
+        <ProjectForm Project="_project" OnSubmit="SubmitForm" />
     </div>
 </div>
 
 @code {
-    Project project = new Project();
-    protected async void CreateProject()
+    private Project _project = new Project();
+    
+    private async Task SubmitForm(Project project)
     {
         await ProjectService.AddProject(project);
         NavigationManager.NavigateTo("projects");
